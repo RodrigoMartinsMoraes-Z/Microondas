@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Microondas</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Microondas</h1>
+        <div class="row">
+            <div class="col-sm-6">
+                <form id="microondas-form">
+                    <div class="form-group">
+                        <label for="time-input">Tempo (segundos ou minutos:segundos)</label>
+                        <input type="text" class="form-control" id="time-input" placeholder="Ex: 30 ou 2:30" onfocus="thisOnFocus(this)" onchange="formatTime()" maxlength="4">
+                    </div>
+                    <div class="form-group">
+                        <label for="power-input">Potência (1-10)</label>
+                        <input type="number" class="form-control" id="power-input" min="1" max="10" value="10">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="start-button">Iniciar</button>
+                        <button type="button" class="btn btn-warning" id="quick-start-button">Início Rápido</button>
+                        <button type="button" class="btn btn-danger" id="cancel-button">Cancelar / Pausar</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="progress-label">Aquecimento</label>
+                        <p id="progress-label"></p>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <!-- Painel numérico -->
+                        <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(1)">1</button>
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(2)">2</button>
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(3)">3</button>
+                        </div>
+                        <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(4)">4</button>
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(5)">5</button>
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(6)">6</button>
+                        </div>
+                        <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(7)">7</button>
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(8)">8</button>
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(9)">9</button>
+                        </div>
+                        <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-info btn-numero" onclick="inputValue(0)">0</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        let interval;
+        let remainingSeconds;
+        let power;
+        let isPaused = false;
+
+        let selectedField;
+
+        function updateProgressLabel() {
+            var dotsPerSecond = 2 * power;
+            var dots = ".".repeat(Math.ceil((120 - remainingSeconds) * dotsPerSecond / 60));
+            var progressString = dots.padEnd(dots.length + remainingSeconds * dotsPerSecond / 60, " ");
+            $("#progress-label").text(progressString);
+        }
+
+        function stopInterval() {
+            clearInterval(interval);
+            interval = null;
+            remainingSeconds = 0;
+            isPaused = false;
+            updateProgressLabel();
+        }
+
+        function startInterval() {
+            if (interval !== null) {
+                stopInterval();
+                remainingSeconds += 30;
+            } else {
+                if ($("#time-input").val().match(/^\d+(:\d+)?$/) === null) {
+                    alert("Tempo inválido. Informe um número inteiro ou no formato de minutos:segundos.");
+                    return;
+                }
+                var timeParts = $("#time-input").val().split(":");
+                if (timeParts.length === 1) {
+                    remainingSeconds = parseInt(timeParts[0]);
+                } else {
+                    remainingSeconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+                }
+                if (remainingSeconds < 1 || remainingSeconds > 120) {
+                    alert("Tempo inválido. Informe um tempo entre 1 segundo e 2 minutos.");
+                    return;
+                }
+                power = parseInt($("#power-input").val());
+                if (power < 1 || power > 10) {
+                    alert("Potência inválida");
+                    return;
+                }
+            }
+        }
+
+        function thisOnFocus(field) {
+            selectedField = field;
+        }
+
+        function inputValue(number) {
+            if (selectedField.value.length <= 4)
+                selectedField.value = selectedField.value + number;
+            formatTime();
+        };
+
+        function formatTime() {
+            var valor = selectedField.value;
+            valor = valor.replace(/\D/g, ''); // Remove tudo que não é dígito
+            valor = valor.replace(/^(\d{2})(\d)/g, '$1:$2'); // Coloca ':' após os 2 primeiros dígitos
+            selectedField.value = valor;
+        }
+    </script>
+</body>
+</html>

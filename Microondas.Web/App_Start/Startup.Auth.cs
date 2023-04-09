@@ -1,13 +1,6 @@
-﻿using Microondas.Web.Models;
-using Microondas.Web.Providers;
+﻿using Microondas.Web.Providers;
 
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.DataProtection;
-using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 
 using Owin;
