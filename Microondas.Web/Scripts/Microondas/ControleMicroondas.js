@@ -5,6 +5,10 @@ let isPaused = false;
 
 let selectedField = document.getElementById("time-input");
 
+let preProgrammed = {};
+let itens;
+let itemSelected;
+
 function updateProgressLabel() {
     if (!isPaused) {
         if (remainingSeconds > 0) {
@@ -89,3 +93,41 @@ function formatTime() {
     valor = valor.replace(/^(\d{2})(\d)/g, '$1:$2'); // Coloca ':' após os 2 primeiros dígitos
     selectedField.value = valor;
 }
+
+function getResultAndList(result) {
+    itens = JSON.parse(result);
+    // seleciona o dropdown pelo id
+    const dropdown = document.getElementById('item-dropdown');
+    // para cada item, adiciona uma nova opção ao dropdown
+    itens.forEach(function (item) {
+        const option = document.createElement('option');
+        option.text = item.Nome;
+        option.value = item.Id;
+        dropdown.add(option);
+    });
+    // adiciona um listener para quando uma opção for selecionada
+    dropdown.addEventListener('change', function () {
+        preProgrammed = dropdown.options[dropdown.selectedIndex].text;
+        itemSelected = itens.find(function (item) {
+            return item.Nome == preProgrammed;
+            //return item.Id == dropdown.value;
+        });
+        console.log(itemSelected);
+    });
+}
+
+//buscar pré definições na api
+let xhr = new XMLHttpRequest();
+
+xhr.open('GET', 'https://localhost:44366/programacao');
+
+xhr.onload = function () {
+    if (xhr.status === 200) {
+        let result = xhr.responseText;
+        getResultAndList(result);
+    } else {
+        console.log('Erro na requisição. Código de status: ' + xhr.status);
+    }
+};
+
+xhr.send();

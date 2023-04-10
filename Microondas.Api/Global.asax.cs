@@ -27,6 +27,8 @@ namespace Microondas.Api
     {
         protected void Application_Start()
         {
+    
+
             var container = new Container();
 
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
