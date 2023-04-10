@@ -41,7 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Programacao\IProgramacaoService.cs" />
+    <Compile Include="Programacao\IProgramacaoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microondas.Domain\Microondas.Domain.csproj">
+      <Project>{a589b364-ca70-4e9c-a09b-db9c654d0d59}</Project>
+      <Name>Microondas.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

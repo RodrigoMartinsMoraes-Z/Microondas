@@ -41,7 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Programacao\ProgramacaoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microondas.Domain\Microondas.Domain.csproj">
+      <Project>{a589b364-ca70-4e9c-a09b-db9c654d0d59}</Project>
+      <Name>Microondas.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microondas.Interface\Microondas.Interface.csproj">
+      <Project>{91904318-2198-4b1c-ac3d-17a41cb76226}</Project>
+      <Name>Microondas.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
